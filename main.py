@@ -5,6 +5,7 @@ from at_media_handling import extract_class_from_media_queries, combine_matching
 from psudo_selector import split_css_classes_and_pseudo, split_css_by_pseudo_selector, combine_css_classes_with_pseudo
 import logging
 import argparse
+from html_parser import parse_html
 
 
 logger = logging.getLogger(__name__)
@@ -163,16 +164,28 @@ def run_css_extraction(input_css_file, input_data_file, output_file):
     output_css_file.close()
 
 def html(parsed_args):
-    getattr(parsed_args, '--input-html-file')
-    getattr(parsed_args, '--output-html-file')
-    getattr(parsed_args, '--output-json-file')
-    print("Hello html parser")
+    input_html_file = getattr(parsed_args, 'input_html_file')
+    if not input_html_file:
+        raise Exception("--input-html-file needs to be defined for --html extraction")
+    output_json_file = getattr(parsed_args, 'output_json_file')
+    if not output_json_file:
+        raise Exception("--output-json-file needs to be defined for --html extraction")
+    output_html_file = getattr(parsed_args, 'output_html_file')
+    if not output_html_file:
+        raise Exception("--output-html-file needs to be defined for --html extraction")
+    parse_html(input_html_file, output_json_file, output_html_file)
 
 def css(parsed_args):
-    getattr(parsed_args, '--input-css-file')
-    getattr(parsed_args, '--output-html-file')
-    getattr(parsed_args, '--output-css-file')
-    run_css_extraction()
+    input_css_file = getattr(parsed_args, 'input_css_file')
+    if not input_css_file:
+        raise Exception("--input-css-file needs to be defined for --css extraction")
+    input_json_file = getattr(parsed_args, 'input_json_file')
+    if not input_json_file:
+        raise Exception("--input-json-file needs to be defined for --css extraction")
+    output_css_file = getattr(parsed_args, 'output_css_file')
+    if not output_css_file:
+        raise Exception("--output-css-file needs to be defined for --css extraction")
+    run_css_extraction(input_css_file, input_json_file, output_css_file)
 
 if __name__ == "__main__":
     logging.basicConfig(
@@ -185,7 +198,6 @@ if __name__ == "__main__":
                     epilog='Get extracting')
 
     parser = argparse.ArgumentParser()
-
     parser.add_argument('--html', dest='action', action='store_const', const=html)
     parser.add_argument('--css', dest='action', action='store_const', const=css)
     # These args are used fot the html parser function

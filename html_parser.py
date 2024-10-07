@@ -3,8 +3,8 @@ import random
 import string
 import json
 
-def parse_html():
-    with open('input/input.html', 'r') as f:
+def parse_html(input_html_file: str, output_json_file: str, output_html_file: str):
+    with open(input_html_file, 'r') as f:
         webpage = f.read()
     soup = BeautifulSoup(webpage, features="html.parser")
     classes_map = {}
@@ -27,10 +27,8 @@ def parse_html():
         if node.has_attr('class'):
             break
 
-    with open("output/output.html", "w") as file:
+    with open(output_html_file, "w") as file:
         file.write(str(soup))
         
-    with open('input/input.json', 'w') as fout:
+    with open(output_json_file, 'w') as fout:
         json.dump(new_classes_list, fout)
-
-parse_html()
