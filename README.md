@@ -1,16 +1,18 @@
-# CSS Extractor
+![CSS Extractor Logo](assets/logo.png)
 
-The handiest script for UI development. Copy your favorite elements from the internet and get back `HTML` and `CSS` files that you can use and modify right away. No more manually copying and pasting elements from stylesheets.
+The handiest script for UI development. Copy your favorite elements from the internet and get back `HTML` and `CSS` files that you can use and modify right away. No more manually copying and pasting definitions from stylesheets.
 
 ## Installation
 
-1. Create a Python Virtual Environment
+1. **Create a Python Virtual Environment**
+
 You can use `conda` or something else, but this is the fastest for me.
 ```
 python -m venv /path/to/new/virtual/environment
 ```
 
-2. Download Dependencies
+2. **Download Dependencies**
+
 Make sure to activate your virtual environment before running!
 ```
 pip3 install -r requirements.txt
@@ -20,8 +22,9 @@ pip3 install -r requirements.txt
 
 The extraction process is a 2-step process.
 
-1. HTML Extraction
-   We first analyze the input HTML markup and create a map of old classes to new ones.
+1. **HTML Extraction**
+
+We first analyze the input HTML markup and create a map of old classes to new ones.
 
 For example, if you have an HTML element like the following:
 ```html
@@ -30,10 +33,12 @@ For example, if you have an HTML element like the following:
 
 We would generate a mapping that is JSON-encoded like this:
 ```json
+[
 {
   "newClass": "RANDOM_STRING_CLASS_NAME",
   "oldClasses": "big, red, slant"
 }
+]
 ```
 
 And produce an output HTML file like this:
@@ -41,8 +46,10 @@ And produce an output HTML file like this:
 <h1 class="RANDOM_STRING_CLASS_NAME">This is a header</h1>
 ```
 
-2. CSS Extraction  
-   The JSON file generated in the previous step is then fed into the CSS extraction process, which builds our new class with all the styles from the old classes. The output class will have the old class names annotated in the CSS as comments for debugging purposes.
+2. **CSS Extraction**
+
+The JSON file generated in the previous step is then fed into the CSS extraction process, which builds our new class with all the styles from the old classes. The output class will have the old class names annotated in the CSS as comments for debugging purposes.
+
 ```css
 .RANDOM_STRING_CLASS_NAME {
     /* big */
@@ -78,15 +85,15 @@ After years of manually extracting styles from websites I liked, I decided to cr
 
 ## How does it work?
 
-The first iteration used regex to find and grab the CSS definitions from the desired input classes. However, this approach turned out to be problematic because CSS is complex, especially when you're dealing with @media queries and pseudo-selectors. There are still some leftover functions that use regex matching, as I didn't bother to rewrite them.
+The first iteration used regex to find and grab the CSS definitions from the desired input classes. However, this approach turned out to be problematic because CSS is complex, especially when you're dealing with `@media` queries and `pseudo-selectors`. There are still some leftover functions that use regex matching, as I didn't bother to rewrite them.
 
-I eventually started using the `tinycss2` library, which parses CSS text into a format that can be programmatically analyzed. This is much better for handling @media queries and pseudo-selectors. This approach is a bit slow, as it involves many nested loops, and the library is not optimized for speed. Once we resolve the edge cases, we can focus on improving the program's performance.
+I eventually started using the `tinycss2` library, which parses CSS text into a format that can be programmatically analyzed. This is much better for handling `@media` queries and `pseudo-selectors`. This approach is a bit slow, as it involves many nested loops, and the library is not optimized for speed. Once we resolve the edge cases, we can focus on improving the program's performance.
 
 ## Caveats
 
 - This is a very basic implementation, but it has served me well so far. There are certain edge cases that the library does not handle. For example, it struggles with nested classes (a child element within a parent element with a specific class). This nested class example will break the script.
 
-- "Not" selectors and complex pseudo-selectors are also tricky and not detected. Feel free to open an issue for any bugs you encounter. If it's feasible, we'll fix them.
+- `Not` selectors and complex `pseudo-selectors` are also tricky and not detected. Feel free to open an issue for any bugs you encounter. If it's feasible, we'll fix them.
 
 - The formatting of the output files is a bit janky. In the future, we can clean this up, but for now, it's easy enough to reformat CSS and HTML in a code editor or IDE.
 
