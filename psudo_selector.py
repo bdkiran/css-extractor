@@ -2,10 +2,11 @@ import re
 import tinycss2
 import logging
 from collections import defaultdict
+from typing import List, Tuple
 
 logger = logging.getLogger(__name__)
 
-def does_prelude_contain_psuodo_selector(prelude):
+def does_prelude_contain_psuodo_selector(prelude) -> bool:
     for item in prelude:
         if isinstance(item, tinycss2.ast.LiteralToken):
             if item.value == ":":
@@ -23,7 +24,7 @@ def get_psudo_selector_from_prelude(prelude):
             return my_psudo
     return None
 
-def split_css_classes_and_pseudo(css_content):
+def split_css_classes_and_pseudo(css_content: str) -> Tuple[str, str]:
     byte_thing = str.encode(css_content)
     rules = tinycss2.parse_stylesheet_bytes(byte_thing, skip_whitespace=True, skip_comments=True)
     regular_classes = []
@@ -41,7 +42,7 @@ def split_css_classes_and_pseudo(css_content):
     psudo_class_string = tinycss2.serialize(psedo_selector_classes)
     return regular_class_string, psudo_class_string
 
-def split_css_by_pseudo_selector(css_content):
+def split_css_by_pseudo_selector(css_content: str) -> dict:
     pseudo_styles_string_dict = {}
     if css_content == "":
         logger.error("no css content for psudo selector")
@@ -66,8 +67,8 @@ def split_css_by_pseudo_selector(css_content):
 
     return pseudo_styles_string_dict    
 
-def combine_css_classes_with_pseudo(pseudo_selector: str, css_content:str, combine_class_name: str):
-    combined_styles = []
+def combine_css_classes_with_pseudo(pseudo_selector: str, css_content:str, combine_class_name: str) -> str:
+    combined_styles: List[str] = []
     byte_thing = str.encode(css_content)
     rules = tinycss2.parse_stylesheet_bytes(byte_thing, skip_whitespace=True, skip_comments=True)
     for rule in rules[0]:

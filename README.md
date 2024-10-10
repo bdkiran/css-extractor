@@ -93,7 +93,7 @@ I eventually started using the `tinycss2` library, which parses CSS text into a 
 
 - This is a very basic implementation, but it has served me well so far. There are certain edge cases that the library does not handle. For example, it struggles with nested classes (a child element within a parent element with a specific class). This nested class example will break the script.
 
-- `Not` selectors and complex `pseudo-selectors` are also tricky and not detected. Feel free to open an issue for any bugs you encounter. If it's feasible, we'll fix them.
+- CSS Combinators and complex `pseudo-selectors` are also tricky and not detected. Feel free to open an issue for any bugs you encounter. If it's feasible, we'll fix them.
 
 - The formatting of the output files is a bit janky. In the future, we can clean this up, but for now, it's easy enough to reformat CSS and HTML in a code editor or IDE.
 

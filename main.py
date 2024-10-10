@@ -1,6 +1,7 @@
 import re
 import json
 import tinycss2
+from typing import List
 from at_media_handling import extract_class_from_media_queries, combine_matching_media_queries, combine_nested_classes_in_media
 from psudo_selector import split_css_classes_and_pseudo, split_css_by_pseudo_selector, combine_css_classes_with_pseudo
 import logging
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 # This formatting is used across all the scripts
 LOGGING_FORMATING = "%(asctime)s - %(filename)s:%(funcName)s:%(lineno)s - %(levelname)s - %(message)s"
 
-def extract_regular_css_class(css_content, wanted_class_name): 
+def extract_regular_css_class(css_content, wanted_class_name) -> str: 
     rules = tinycss2.parse_stylesheet_bytes(css_content, skip_whitespace=True, skip_comments=True)
     extracted_css_nodes = []
     for rule in rules[0]:
@@ -27,7 +28,7 @@ def extract_regular_css_class(css_content, wanted_class_name):
         extracted_css = tinycss2.serialize(extracted_css_nodes)
         return extracted_css
 
-def combine_regular_css_classes(css_contents, combined_class_name):
+def combine_regular_css_classes(css_contents: str, combined_class_name: str) -> str:
     # Updated regex pattern to match class selectors with dashes and underscores
     class_pattern = re.compile(r'\.([a-zA-Z0-9-_]+)\s*{([^}]*)}', re.DOTALL)
     
@@ -89,7 +90,7 @@ def tailwind_keepout(input_class_name: str):
             return True
     return False
 
-def css_class_converter(css_content: str, new_class_name: str, class_name_array: [str]):
+def css_class_converter(css_content: str, new_class_name: str, class_name_array: List[str]):
     regular_css_buffer = ''
     at_media_css_buffer = ''
     not_found_regular_css_class = []
