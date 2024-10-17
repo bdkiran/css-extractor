@@ -2,6 +2,8 @@
 
 The handiest script for UI development. Copy your favorite elements from the internet and get back `HTML` and `CSS` files that you can use and modify right away. No more manually copying and pasting definitions from stylesheets.
 
+> If you don't want to use the command line. A simple [web version is avaliable](https://cssextractor.com). Just drop in your HTML and CSS input files and download the transformed output.
+
 ## Installation
 
 1. **Create a Python Virtual Environment**
